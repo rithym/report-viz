@@ -1,0 +1,186 @@
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.mat-sidenav {
+  min-width: 300px;
+  max-width: 300px;
+  background: #f7f7f7 0% 0% no-repeat padding-box;
+}
+.user-roles{
+  font-size: 11px;
+  padding-left: 10px;
+  padding-top:8px;
+}
+
+.mat-sidenav-container {
+  height: 100vh !important;
+}
+
+.has-border {
+  border-right: 0px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-list {
+  padding-top: 0;
+}
+
+.mat-list-item {
+  text-decoration: none;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.menu-button {
+  margin-right: 1rem;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.fixed-toolbar {
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
+.mat-list-item.active {
+  background: #3f51b5;
+  color: white;
+}
+
+.layout-toolbar {
+  background: #ffffff 0% 0% no-repeat padding-box;
+}
+
+.mat-sidenav-content {
+  background: #ffffff 0% 0% no-repeat padding-box;
+}
+
+.mat-list-item span {
+  padding-left: 18px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: left;
+  font: normal normal normal 14px/17px BentonSans Medium;
+  letter-spacing: 0.1px;
+  color: #3b3b3b;
+  opacity: 1;
+}
+
+.profile-card {
+  margin: 15px 15px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 5px 5px 10px #0000001a;
+  border-radius: 10px;
+}
+
+.profile-image {
+  border-radius: 50%;
+}
+
+// .container{
+//   padding: 10px;
+// }
+
+#userName {
+  font: normal normal normal 14px/17px BentonSans Bold;
+  letter-spacing: 0.1px;
+  color: #3b3b3b;
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+#userType {
+  font: normal normal normal 12px/15px BentonSans Regular;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #92929d;
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+.profile-menu-content {
+  padding-top: 10px;
+}
+
+.profile-action {
+  float: right;
+  position: relative;
+  right: 0;
+  bottom: 2px;
+}
+
+.profile-menu-label {
+  font: normal normal normal 13px/17px BentonSans Medium;
+  letter-spacing: 0.09px;
+  color: #3b3b3b;
+}
+
+.logout-section {
+  padding-right: 40px;
+}
+
+.welcome-section {
+  padding-right: 15px;
+}
+
+.logout-text {
+  padding-left: 5px;
+  font: normal normal normal 13px/17px BentonSans Medium;
+  letter-spacing: 0.09px;
+  color: #3b3b3b;
+}
+
+::ng-deep .profile-menus .mat-menu-content:not(:empty) {
+  padding: 0px !important;
+}
+
+.company-section {
+  padding-top: 15px;
+}
+
+::ng-deep .module-form-field .mat-form-field-flex > .mat-form-field-infix {
+  padding: 0.75rem 0px !important;
+}
+::ng-deep .module-form-field .mat-form-field-label-wrapper {
+  top: -1.5rem !important;
+}
+
+.module-form-field {
+  font-size: 0.75rem !important;
+}
+.loader-container{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #cdc8c8;;
+  opacity: 0.8;
+  z-index: 99;
+}
+.logoButton {
+  border: 1px solid;
+  border-color: purple;
+  height: 37px;
+}
+button#saveupload{
+width:80%;
+background: #86c232;
+color: white;
+font-weight: 900;
+}
+
+button#save{
+width:40%;
+background: #86c232;
+color: white;
+font-weight: 900;
+}

@@ -1,0 +1,204 @@
+<div fxLayout="row-wrap" fxLayoutGap="4px" class="card-container" cdkDropListGroup>
+  <!-------------------Side Bar--------------------------------->
+  <div
+    fxFlex
+    fxLayout="column"
+    fxAlign="start"
+    fxLayoutGap="10px"
+    class="side-section"
+    *ngIf="sidebaractive"
+  >
+    <mat-toolbar
+      class="collapse-sidebar"
+      fxLayout="row"
+      fxAlign="space-between"
+    >
+      <div class="main-head">
+        <p class="side-main-heading">Tables & Queries</p>
+      </div>
+      <mat-icon (click)="sidebaractive = !sidebaractive" class="top-side-icon"
+        >view_list</mat-icon
+      >
+    </mat-toolbar>
+    <div style='display:flex;flex-direction: column;'fxFlex="18%">
+    <mat-accordion
+      fxLayout="column"
+      fxAlign="start"
+      class="side-menu-option"
+     
+    >
+      <!-----New Thing--- check 1  - cls 2up---->
+      <mat-expansion-panel (click)="changeMenu('report')">
+        <mat-expansion-panel-header class="side-header">
+          <mat-panel-title >
+            <mat-icon>chrome_reader_mode</mat-icon>
+            &nbsp;Reports & Visulizations
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <mat-expansion-panel class="scrollable-list">
+            <mat-expansion-panel-header class="side-header">
+              <mat-panel-title>
+                <mat-icon>library_books</mat-icon>
+                &nbsp;All Tables
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <!-------------side nav design------------>
+            <mat-form-field fxFlexLayout="column" class="search-field">
+              <mat-label class="label-design">Search Table Here</mat-label>
+              <input
+                matInput
+                [(ngModel)]="searchText"
+                (keyup)="onSearchText($event)"
+                type="text"
+                name="search"
+                (keydown)="$event.stopPropagation()"
+              />
+              <mat-icon matSuffix (click)="clearSearch()">refresh</mat-icon>
+            </mat-form-field>
+            <mat-expansion-panel class="sub-section"
+              *ngFor="let table of tableData; let a = index"
+              hideToggle="true"
+            >
+              <mat-expansion-panel-header
+                class="side-subheading"
+                (click)="clickedTable(table.tablename, a)"
+              >
+                <mat-icon class="table-chart"> table_chart</mat-icon
+                ><span class="table-name-heading">{{
+                  table.tablename | uppercase
+                }}</span>
+                <mat-icon *ngIf="!table.panelOpenState" class="add-remove"
+                  >add</mat-icon
+                >
+                <mat-icon *ngIf="table.panelOpenState" class="add-remove"
+                  >remove</mat-icon
+                >
+              </mat-expansion-panel-header>
+              <mat-panel-description class="table-desc">
+                <div
+                  #listData="cdkDropList"
+                  fxFlex
+                  cdkDropList
+                  [cdkDropListData]="table.columnslist"
+                  [cdkDropListConnectedTo]="['doneList']"
+                >
+                  <mat-list class="table-list">
+                    <mat-list-item
+                      class="table-list-item"
+                      #data
+                      fxFlexLayout="column"
+                      fxAlign="center"
+                      *ngFor="let data of table.columnslist; let b = index"
+                      cdkDrag
+                      [cdkDragDisabled]="sameData(data, table.tablename)"
+                      [ngClass]="
+                        sameData(data, table.tablename)
+                          ? 'disableField'
+                          : 'none'
+                      "
+                      [cdkDragData]="data"
+
+                      >{{ data.columnName | titlecase }}</mat-list-item
+                    >
+                  </mat-list>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel>
+          </mat-expansion-panel>
+        </div>
+        <div>
+          <mat-expansion-panel>
+            <!----------------Saved Report Section----------->
+            <mat-expansion-panel-header class="side-header">
+              <mat-panel-title>
+                <mat-icon>archive</mat-icon>
+                &nbsp;Saved Reports
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description fxFlex>
+              <mat-list class="saved-list">
+                <mat-list-item
+                  class="saved-list-item"
+                  *ngFor="let report of savedReport"
+                  fxFlexLayout="column"
+                  fxFlexAlign="space-between"
+                >
+                  {{ report.ReportName | titlecase }}
+                  <button
+                    mat-icon-button
+                    fxFlexAlign="end"
+                    class="edit-report"
+                    (click)="getReportById(report.ReportId)"
+                  >
+                    <mat-icon class="edit-icon"> edit </mat-icon>
+                  </button>
+                </mat-list-item>
+              </mat-list>
+            </mat-panel-description>
+          </mat-expansion-panel>
+        </div>
+      </mat-expansion-panel>
+</mat-accordion>
+      <!----------------Hierarchy Section----------->
+      <mat-accordion >
+       <div>
+        <mat-expansion-panel class="scrollable-list" (click)="changeMenu('hierarchy')">
+          <mat-expansion-panel-header class="side-header" >
+            <mat-panel-title>
+              <mat-icon>horizontal_split</mat-icon>
+              &nbsp;Hierarchy
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-panel-description fxFlex>
+            <mat-list class="saved-list">
+              <mat-list-item
+                class="saved-list-item"
+                fxFlexLayout="column"
+                fxFlexAlign="space-between"
+              >
+                {{ "Individual" | titlecase }}
+              </mat-list-item>
+              <br />
+              <mat-list-item
+                class="saved-list-item"
+                fxFlexLayout="column"
+                fxFlexAlign="space-between"
+              >
+                {{ "Entire" | titlecase }}
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-description>
+         </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+
+  </div>
+  </div>
+  <div fxFlex="3%" *ngIf="!sidebaractive">
+    <mat-toolbar
+      style="
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 17px;
+      "
+    >
+      <!-- <button >Click here </button> -->
+      <mat-icon (click)="sidebaractive = !sidebaractive">view_list</mat-icon>
+    </mat-toolbar>
+  </div>
+  <!--------------------------------------->
+
+  <!-------------------------Main Section------------------------------------------>
+  <mat-card [fxFlex]="sidebaractive ? '82%' : '100%'" class="main-section" *ngIf="selectedMenu=='report'">
+  <app-report [editData]="editData" [graphData]="graphData" (childEvent)="saveReport($event)"></app-report>
+  </mat-card>
+  <!-------------------------------------------------------------------------------->
+  <!-------------------------Main Section------------------------------------------>
+  <mat-card [fxFlex]="sidebaractive ? '82%' : '100%'" class="main-section" *ngIf="selectedMenu=='hierarchy'">
+    <app-column-hierarachy></app-column-hierarachy>
+    </mat-card>
+    <!-------------------------------------------------------------------------------->
+</div>

@@ -1,0 +1,135 @@
+
+<div *ngIf="loaderService.isLoading | async" class="loader-container">
+  <mat-spinner style="top: 50%;left: 50%;"></mat-spinner>
+</div>
+  <div fxFlex>
+    <mat-sidenav-container fxFill>
+      <mat-sidenav
+        ngClass.gt-sm="has-border"
+        class="tmi-sidenav"
+      >
+        <mat-toolbar class="tmi-toolbar mat-elevation-z1">
+          <div
+            fxFill
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="1.5rem"
+          >
+            <img
+               alt="logo"
+              src="assets/logo.png"
+              width="60px"
+              height="40px"
+              style="cursor: pointer"
+            />
+          </div>
+        </mat-toolbar>
+        <nav>
+          <br />
+          <mat-card class="profile-card">
+            <div fxLayout="row" fxLayoutGap="10px">
+              <img src="assets/pp.jpg" class="profile-image" fxFlex="20" />
+              <div fxFlex="70">
+                <mat-card-title id="userName">John</mat-card-title>
+                <mat-card-subtitle class="user-roles">User Roles</mat-card-subtitle>
+              </div>
+              <img
+                src="assets/settings.svg"
+                class="settings-menu"
+                fxFlex="10"
+              />
+            </div>
+            <br />
+            <mat-divider ></mat-divider>
+            <mat-card-content class="profile-menu-content">
+              <button
+                mat-menu-item
+                class="profile-menu-label"
+                routerLink="/home/profile/my-profile"
+              >
+                My Profile
+              </button>
+              <button
+                mat-menu-item
+                class="profile-menu-label"
+                routerLink="/home/profile/change-password"
+              >
+                Change Password
+              </button>
+              <button mat-menu-item class="profile-menu-label" (click)="logOut()">
+                Logout
+              </button>
+
+              <mat-menu
+                #language="matMenu"
+                xPosition="after"
+                class="profile-menus"
+              >
+                <button mat-menu-item >
+                  English
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item >
+                  German
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item>
+                  Spanish
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item>
+                  French
+                </button>
+                <mat-divider></mat-divider>
+              </mat-menu>
+
+              <mat-menu
+                #myAccount="matMenu"
+                xPosition="after"
+                class="profile-menus"
+              >
+                <div>
+                  <button mat-menu-item >
+                   Screen Names
+                  </button>
+                  <mat-divider></mat-divider>
+                </div>
+              </mat-menu>
+            </mat-card-content>
+          </mat-card>
+
+          <app-sidebar class="mat-sidenavbar-container"></app-sidebar>
+        </nav>
+      </mat-sidenav>
+      <mat-sidenav-content>
+
+        <mat-toolbar class="tmi-toolbar mat-elevation-z1 fixed-toolbar">
+          <img
+               alt="logo"
+              src="assets/logo.png"
+              width="60px"
+              height="40px"
+              style="cursor: pointer"
+            />
+          <!-- <button class="menu-button" mat-icon-button>
+            <mat-icon>menu</mat-icon>
+          </button> -->
+          <!-- <h3 class="menu-button"> Dynamic Report</h3> -->
+          <span class="example-spacer"></span>
+          <div class="welcome-section">
+            <!-- <span class="logout-text">{{ "Welcome John" }}</span> -->
+            
+            <button mat-icon-button color="accent" aria-label="Logout" (click)="logOut()">
+              <mat-icon><span class="material-icons">logout</span></mat-icon>{{'Logout'}}
+            </button>
+          </div>
+        </mat-toolbar>
+        <div class="container">
+          <!-- <app-dynamic-report></app-dynamic-report> -->
+           <router-outlet>
+           
+          </router-outlet> 
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>

@@ -1,0 +1,89 @@
+<div fxLayout="column">
+    <div fxLayoutAlign="end center" fxFlex="100">
+    <button  mat-button color="warn" (click)="closeDialog()">X</button>
+</div>
+    </div>
+<form [formGroup]="chartForm" (ngSubmit)="onEdit()" class="chart-options-form" fxLayout="row wrap" fxLayoutAlign="space-between start" [fxHide]="!editMode">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between start" style="width:100%">
+    <div class="chart-type" fxFlex="20">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>X-Axis</mat-label>
+        <mat-select formControlName="xAxisColumn">
+          <mat-option *ngFor="let data of columnDataFromInput" [value]="data">{{ data.key | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="chart-type" fxFlex="20">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>Y-Axis</mat-label>
+        <mat-select formControlName="yAxisColumn">
+          <mat-option *ngFor="let data of columnDataFromInput" [value]="data">{{ data.key | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="chart-type" fxFlex="20">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>Chart Type</mat-label>
+        <mat-select formControlName="selectedChart">
+          <mat-option *ngFor="let chart of chartsTypes" [value]="chart">{{ chart | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="chart-type" fxFlex="20">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>Group</mat-label>
+        <mat-select formControlName="xGroupBy">
+          <mat-option *ngFor="let data of groupList" [value]="data">{{ data | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="chart-type" fxFlex="20">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>Aggregate Type</mat-label>
+        <mat-select formControlName="aggregateFunction">
+          <mat-option *ngFor="let data of dataTypes" [value]="data.value">{{ data.aggFn | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="chart-type" fxFlex="20" [fxHide]="showDateXaxis" >
+        <mat-form-field class="lable-width" appearance="outline">
+          <mat-label>Date Format X-axis</mat-label>
+          <mat-select formControlName="xDateGroup">
+            <mat-option *ngFor="let data of dateFormats" [value]="data.value">{{ data.formate | uppercase }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+    <div class="chart-type" fxFlex="20" [fxHide]="showDateYaxis">
+      <mat-form-field class="lable-width" appearance="outline">
+        <mat-label>Date Format Y-axis</mat-label>
+        <mat-select formControlName="yDateGroup">
+          <mat-option *ngFor="let data of dateFormats" [value]="data.value">{{ data.formate | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="chart-type" fxFlex="20" ></div>
+    <div class="chart-type" fxFlex="20" ></div>
+    <div class="chart-type" fxFlex="20" ></div>
+  </div>
+  <div style="width: 100%;">
+    <div class="chart-option" fxFlex="10" fxLayoutAlign="start start" fxLayoutGap="10px">
+      <button mat-raised-button color="primary" type="submit">Edit</button>
+    </div>
+    <div fxLayoutAlign="start center" fxFlex="10">
+      <button  mat-raised-button color="accent" [disabled]="editButtonClicked == false" [fxHide]="!editMode" (click)="onSaveDataAndClose()">SAVE</button>
+  </div>
+  </div>
+  </form>
+
+<div fxLayout="column"  >
+    
+    <div class="canvas-container" fxLayoutAlign="center" fxFlex="100">
+      <canvas id="chartCanvas" class="chart-canvas"></canvas>
+    </div>
+    
+</div>

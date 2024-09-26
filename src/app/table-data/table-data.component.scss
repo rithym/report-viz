@@ -1,0 +1,156 @@
+.third-section-close {
+    // max-height: 45%;
+    margin: 10px;
+    border: 1px solid #555;
+    //check 5
+    min-height: 77vh;
+    max-height: 78vh;
+    //background-color: red;
+    // overflow-y: auto;
+
+    .table-height {
+      // max-height: 160px;
+      overflow-y: auto !important;
+      overflow-x: auto !important;
+      scrollbar-width: 4px;
+    }
+
+    .table-height::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .table-height::-webkit-scrollbar-thumb {
+      width: 4px;
+      background-color: #3452b4; /* color of the scroll thumb */ /* creates padding around scroll thumb */
+    }
+
+    // .third-section-open {
+    //   max-height: 55%;
+    //   max-width: 100%;
+    //   margin: 10px;
+    //   border: 1px solid #555;
+    //   display: inline;
+    //   overflow-y: auto;
+    //   overflow-x: auto;
+
+    //   .table-height {
+    //     height: 180px;
+    //     width: 97%;
+    //     overflow-y: auto !important;
+    //     overflow-x: auto !important;
+    //   }
+    // }
+    .expansion-header {
+      margin-bottom: 0px;
+    }
+    .search-field-div {
+      margin-left: 25px;
+      flex: 1 1 100%;
+      box-sizing: border-box;
+      max-width: 67%;
+      height: 40px;
+    }
+    ::ng-deep .mat-tab-label {
+      height: 30px;
+    }
+    ::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+      padding: 0.4em 0px !important;
+    }
+    ::ng-deep .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+
+    ::ng-deep
+      .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
+      .mat-form-field-label {
+      transform: translateY(-1.1em) scale(0.75);
+      width: 133.33333%;
+    }
+    .table-headers {
+      // margin-right: 10px;
+      // word-break: break-all;
+      text-transform: uppercase;
+      color: green;
+      padding: 5px 12px;
+      // min-width: 200px;
+      // max-width: 200px;
+    }
+    .company-list-cell {
+      white-space: pre-wrap;
+      padding: 0px 12px;
+      // min-width: 200px;
+      // max-width: 200px;
+    }
+
+    .table-height::-webkit-scrollbar {
+      width: 4px;
+    }
+    .table-height::-webkit-scrollbar-thumb {
+      background-color: #3452b4; /* color of the scroll thumb */ /* creates padding around scroll thumb */
+    }
+  }
+
+  .mat-expansion-panel-header.mat-expanded {
+    height: 43px;
+    margin-left: -10px;
+    font-weight: 700;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0px 0px;
+    // height: 175px;
+    // max-height: 175px;
+    // overflow-y: auto;
+  }
+
+  .example-accordion {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+  }
+
+  .example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+
+  .try-class {
+    border: 1px solid;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 30px;
+  }
+  .table-height::-webkit-scrollbar {
+    width: 4px;
+  }
+  .table-height::-webkit-scrollbar-thumb {
+    background-color: #3452b4; /* color of the scroll thumb */ /* creates padding around scroll thumb */
+  }
+  /* dynamic-report.component.scss */
+
+  .searchbar {
+    max-height: 50px;
+  }
+
+  ::ng-deep.mat-expansion-panel-body {
+    padding: 0 0px !important;
+    //check
+    // height: 175px;
+    // max-height: 175px;
+    // overflow-y: auto !important;
+  }
+  .company-list-table {
+    margin-left: 24px;
+  }
+
+.search-field {
+  // margin-left: 24px;
+  // margin-right: -10px;
+  // width: 100%;
+}
+.panel-heading {
+  margin-left: 12px;
+}
+.mat-tab-group {
+  margin-bottom: 48px;
+}

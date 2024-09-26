@@ -1,0 +1,118 @@
+<div class="btn-section">
+  <button
+    mat-raised-button
+    extended
+    color="accent"
+    [disabled]="MultipleCharts.length <= 0" (click)="SaveAll()">{{graphData?'UPDATE':'SAVE'}}
+  </button>
+  <button
+    mat-button
+    color="accent"
+    class="save-query-btn"
+    [disabled]="MultipleCharts.length <= 0" (click)="DeleteAll()"
+  >
+  <mat-icon>refresh</mat-icon>Clear
+  </button>
+</div>
+<form [formGroup]="chartForm" (ngSubmit)="onSubmit()" class="chart-options-form" fxLayout="row wrap" fxLayoutAlign="space-between start">
+  <div fxLayout="row wrap" fxLayoutAlign="space-between start" style="width:100%">
+  <div class="chart-type" fxFlex="13">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>X-Axis</mat-label>
+      <mat-select formControlName="xAxisColumn">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of columnDataFromInput" [value]="data">{{ data.key | uppercase }}</mat-option>
+
+      </mat-select>
+      
+    </mat-form-field>
+  </div>
+  <div class="chart-type" fxFlex="13">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Y-Axis</mat-label>
+      <mat-select formControlName="yAxisColumn">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of columnDataFromInput" [value]="data">{{ data.key | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chart-type" fxFlex="13">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Chart Type</mat-label>
+      <mat-select formControlName="selectedChart">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let chart of chartsTypes" [value]="chart">{{ chart | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chart-type" fxFlex="13">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Group</mat-label>
+      <mat-select formControlName="xGroupBy">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of groupList" [value]="data">{{ data | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chart-type" fxFlex="13">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Aggregate Type</mat-label>
+      <mat-select formControlName="aggregateFunction">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of dataTypes" [value]="data.value">{{ data.aggFn | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chart-type" fxFlex="13" [fxHide]="showDateXaxis">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Date Format X-axis</mat-label>
+      <mat-select formControlName="xDateGroup">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of dateFormats" [value]="data.value">{{ data.formate | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chart-type" fxFlex="13" [fxHide]="showDateYaxis">
+    <mat-form-field class="lable-width" appearance="outline">
+      <mat-label>Date Format Y-axis</mat-label>
+      <mat-select formControlName="yDateGroup">
+        <!-- <mat-option>None</mat-option> -->
+        <mat-option *ngFor="let data of dateFormats" [value]="data.value">{{ data.formate | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div style="width: 100%;">
+
+  <!-- <div fxFlex="13"></div> -->
+  <div class="chart-option" fxFlex="13" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <!-- Add the Angular Material Submit Button -->
+    <button mat-raised-button color="primary" [disabled]="!chartForm.valid" type="submit">Submit</button>
+    <button mat-raised-button color="primary" type="button" [fxHide]="isEditClicked" *ngIf="graphData" (click)="graphDataFromInput()">Edit</button>
+    <!-- <button mat-raised-button color="primary" type="button" *ngIf="MultipleCharts.length > 0" (click)="SaveAll()">{{graphData?'UPDATE':'SAVE'}}</button> -->
+    <!-- <button mat-raised-button color="primary" type="button" *ngIf="MultipleCharts.length > 0" (click)="DeleteAll()">Clear</button> -->
+  </div>
+</div>
+</form>
+<!-- <div class="chart-container">
+  <canvas  id="MyChart" class="chart1" >{{ chart }}</canvas>
+</div> -->
+<!-- <div *ngIf="isTabActive"> -->
+<div class="chart-container" *ngFor="let chart of MultipleCharts; let i = index">
+  <mat-card class="chart-card" >
+  <canvas [id]="'Chart' + i"></canvas>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+    <!-- <button mat-button color="primary" (click)="saveChart(i)">SAVE</button> -->
+    <button mat-button color="accent" (click)="deleteChart(i)"><mat-icon>delete</mat-icon></button>
+    <button mat-button color="accent" (click)="previewChart(i,true)"><mat-icon>edit</mat-icon></button>
+    <button mat-button color="primary" (click)="previewChart(i,false)"><mat-icon>visibility</mat-icon></button>
+  </mat-card-actions>
+</mat-card>
+</div>
+<!-- </div> -->
+

@@ -1,0 +1,42 @@
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+  }
+  
+  .mat-expansion-panel {
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  .mat-list {
+    padding: 0 8px !important;
+  }
+  
+  .level1 {
+    color: #3b3b3b;
+    font-size: 14px;
+    line-height: 17px;
+    font-family: "BentonSans Medium";
+    cursor: pointer;
+  }
+  
+  .level2,
+  .level3 {
+    color: #171725;
+    font-size: 13px;
+    line-height: 20px;
+    font-family: "BentonSans Regular";
+    cursor: pointer;
+  }
+  
+  .level1-icons {
+    padding-right: 25px;
+  }
+  
+  // .level3 {
+  //   background: #FFFFFF 0% 0% no-repeat padding-box;
+  // }
+  
+  .mat-list-level2 {
+    padding: 0 0px 0 15px !important;
+  }
+  

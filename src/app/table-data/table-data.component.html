@@ -1,0 +1,123 @@
+<div class="third-section-close">
+<mat-accordion>
+    <mat-expansion-panel
+      expanded="true"
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header class="expansion-header">
+        <mat-panel-title>
+          <p class="panel-heading">Result</p>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- Tabs start -->
+      <!-- <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab label="Table"> -->
+      <!-- First Content Starts -->
+      <mat-panel-description class="searchbar">
+        <!-- <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start end"> -->
+        <!-- Search Filter -->
+        <div fxFlex="67" fxFlex.xs="50" class="search-field-div">
+          <mat-form-field class="search-field" appearance="outline">
+            <input
+              matInput
+              (keyup)="applyFilter($event)"
+              placeholder="{{ 'Search Here' }}"
+              type="text"
+              class="setplace"
+              name="search"
+              (keydown)="$event.stopPropagation()"
+            />
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- Download Files in PDF CSV and Excel -->
+        <div fxFlex="67" fxFlex.xs="50" fxLayoutAlign="end start">
+          <button
+            [matMenuTriggerFor]="menu"
+            matTooltip="{{ 'Download' }}"
+            aria-label="Download Pdf,CSV,Excel"
+            class="export-btn"
+            color="accent"
+            mat-button
+          >
+            <mat-icon class="download-icon">file_download</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="downloadPDF()">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>{{ "Download PDF" }}</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="exportToExcel()">
+              <mat-icon>table_chart</mat-icon>
+              <span>{{ "Download EXCEL" }}</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="exportToCSV()">
+              <mat-icon>subject</mat-icon>
+              <span>{{ "Download CSV" }}</span>
+            </button>
+          </mat-menu>
+        </div>
+        <!-- </div> -->
+      </mat-panel-description>
+      <!-- -------------------------------------------------------------------------- -->
+
+      <mat-table
+        class="company-list-table table-height"
+        [dataSource]="dataSource"
+        matSort
+        id="company-list-table"
+      >
+        <ng-container
+          *ngFor="let disCol of displayedColumns; let colIndex = index"
+          matColumnDef="{{ disCol }}"
+        >
+          <mat-header-cell
+            class="company-list-header-cell table-headers"
+            *matHeaderCellDef
+            mat-sort-header
+            matTooltip="{{ disCol }}"
+            [ngClass]="
+              displayedColumns.length < 5
+                ? 'tableWidthSmall'
+                : 'tableWidthBig'
+            "
+          >
+            {{ disCol }}
+          </mat-header-cell>
+          <mat-cell
+            class="company-list-cell"
+            *matCellDef="let element"
+            [ngClass]="
+              displayedColumns.length < 5
+                ? 'tableWidthSmall'
+                : 'tableWidthBig'
+            "
+          >
+            <span class="mobile-label">{{ element[disCol] }}</span>
+            <span class="company-list"> {{ element[disCol] }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          class="company-list-header-row"
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></mat-header-row>
+        <mat-row
+          class="company-list-row"
+          *matRowDef="let row; columns: displayedColumns"
+        ></mat-row>
+      </mat-table>
+      <!-- Paginator start-->
+
+      <mat-paginator
+        [length]="totalLength"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+      >
+      </mat-paginator>
+    </mat-expansion-panel>
+  </mat-accordion>
+  </div>

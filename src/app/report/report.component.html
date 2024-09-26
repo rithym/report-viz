@@ -1,0 +1,924 @@
+<mat-tab-group  [selectedIndex]="selectedIndex">
+    <mat-tab label="Report" (click)="selectTab(0)">
+      <!-- check4  added div First-tab-->
+      <div class="First-tab">
+        <!--Buutton Section-->
+        <div class="btn-section">
+          <button
+            mat-raised-button
+            extended
+            color="accent"
+            (click)="showTable()"
+            [disabled]="disableExcuteButton()"
+          >
+            <mat-icon>play_arrow</mat-icon>Execute
+          </button>
+          &nbsp; &nbsp; &nbsp; &nbsp;
+          <button
+            mat-button
+            color="accent"
+            class="save-query-btn"
+            (click)="saveReport()"
+            [disabled]="disableSaveButton()"
+          >
+            <mat-icon>play_for_work</mat-icon
+            >{{ mode == "update" ? "Update Report" : "Save Report" }}
+          </button>
+          <button
+            mat-button
+            *ngIf="rules.length<=0"
+            color="accent"
+            class="save-query-btn"
+            [disabled]="disableTableFilterButton()"
+            (click)="addRule()"
+          >
+            <mat-icon>add</mat-icon> Add Table Filter
+          </button>
+          <button
+          mat-button
+          *ngIf="rules.length > 0"
+          color="accent"
+          class="save-query-btn"
+          (click)="deleteAllRule()"
+        >
+        <mat-icon>delete</mat-icon> Delete Table Filters
+        </button>
+          <button
+            mat-button
+            color="accent"
+            class="save-query-btn"
+            (click)="clearAll()"
+            [disabled]="
+              this.reportService.done.length <= 0 &&
+              this.rules.length <= 0 &&
+              this.list.length <= 0
+            "
+          >
+            <mat-icon>refresh</mat-icon>Clear
+          </button>
+        </div>
+        <!----Button Section Ends-->
+        <!---First Part-->
+        <fieldset
+          class="first-section"
+          fxFlexLayout="row"
+          fxFlexAlign="start"
+        >
+          <legend style="font-weight: bold">Selected Columns</legend>
+          <div class="drag-area">
+            <mat-chip-list
+              class="example-list"
+              fxFlex
+              #doneList="cdkDropList"
+              cdkDropList
+              cdkDropListOrientation="horizontal"
+              [cdkDropListData]="reportService.done"
+              (cdkDropListDropped)="onDrop($event)"
+            >
+              <p class="drag-box" *ngIf="reportService.done.length <= 0">
+                Drag and Drop Table Columns Here for Report Generation
+              </p>
+              <mat-chip
+                class="chip-box"
+                *ngFor="let item of reportService.done; let j = index"
+                cdkDrag
+                >{{ item.columnName }}
+                <button
+                  mat-icon-button
+                  color="accent"
+                  *ngIf="reportService.done.length > 0"
+                  (click)="deleteColumn(j, item)"
+                  class="delete-item"
+                >
+                  <mat-icon class="icon-position"> delete_outline </mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+          <div>
+            <button
+              mat-mini-fab
+              *ngIf="selectedTables.length > 1"
+              color="accent"
+              class="add-filter"
+              matTooltip="Add Join Rules"
+              (click)="addJoinRule(0)"
+              [disabled]="reportService.done.length <= 0 || isDisabled == true"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </fieldset>
+
+        <!-----------------------------------First PArt Fineshed------------------------------------------------>
+
+        <!---------------------------------------Second Part------------------------------------------------------>
+        <fieldset
+          class="second-section"
+          fxFlexLayout="row"
+          fxFlexAlign="start"
+          *ngIf="step >= 1"
+        >
+          <legend style="font-weight: bold">Join Table</legend>
+          <mat-accordion>
+            <mat-expansion-panel
+              #panelRef
+              expanded="true"
+              (opened)="panelOpenState1 = true"
+              (closed)="panelOpenState1 = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Join Table Rule Set </mat-panel-title>
+                <!--<mat-panel-description class="second-section-mat-panel-desc">
+               <p class="error-part" *ngIf="error">{{ errorMessage }}</p>
+            </mat-panel-description>-->
+              </mat-expansion-panel-header>
+
+              <ng-container
+                *ngFor="let jrule of joinRules; let i = index"
+                class="query-builder-form-field"
+              >
+                <div
+                  class="rule"
+                  class="first-form-field"
+                  fxLayout="row wrap"
+                >
+                  <!---From Table-->
+                  <div fxFlex="17" style="font-size: 12px" fxFlex.xs="14">
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >From Table<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select
+                        [(ngModel)]="jrule.fromTable"
+                        (selectionChange)="addFromField($event, i)"
+                      >
+                        <mat-option
+                          *ngFor="let table of jrule.fromTables; let z = index"
+                          [value]="table"
+                          >{{ table }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!---------->
+
+                  <!-----From Column-->
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="jrule.fromTable !== ''"
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >From Column<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select [(ngModel)]="jrule.fromColumn">
+                        <mat-option
+                          *ngFor="
+                            let from of jrule.fromFieldList;
+                            let z = index
+                          "
+                          [value]="from"
+                          >{{ from }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!------------>
+
+                  <!-------Search Type----->
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="jrule.fromColumn !== ''"
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >Search Type<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select [(ngModel)]="jrule.searchType">
+                        <mat-option value="Must Match">{{
+                          "Must Match"
+                        }}</mat-option>
+                        <mat-option value="Ignore">{{ "Ignore" }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!------------------->
+
+                  <!------To Table------>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="jrule.searchType !== ''"
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label>To Table</mat-label>
+                      <mat-select
+                        [(ngModel)]="jrule.toTable"
+                        (selectionChange)="addToField($event, i)"
+                      >
+                        <mat-option
+                          *ngFor="let table of selectedTables; let z = index"
+                          [value]="table"
+                          >{{ table }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!----------------->
+
+                  <!----To Column------->
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="jrule.toTable !== ''"
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >To Column<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select [(ngModel)]="jrule.toColumn">
+                        <mat-option
+                          *ngFor="let toColumn of jrule.toFieldList"
+                          [value]="toColumn"
+                          >{{ toColumn }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!------------------------------------------->
+
+                  <div fxFlex="12" style="font-size: 12px" fxFlex.xs="10">
+                    <button
+                      fxFlex="30"
+                      *ngIf="jrule.toColumn !== ''"
+                      mat-icon-button
+                      extended
+                      color="accent"
+                      matTooltip="Add More Join Rules"
+                      (click)="addJoinRule(i)"
+                    >
+                      <mat-icon
+                        class="mat-icon-rtl-mirror delete-icon-position"
+                        >library_add</mat-icon
+                      >
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button
+                      fxFlex="30"
+                      mat-icon-button
+                      extended
+                      color="accent"
+                      matTooltip="Remove Join Rule"
+                      (click)="removeJoinRule(jrule)"
+                    >
+                      <mat-icon
+                        class="mat-icon-rtl-mirror delete-icon-position"
+                      >
+                        delete_forever
+                      </mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </fieldset>
+        <!---------------------------------------Second Part Fineshed-------------------------------------->
+
+        <!---------------------------------------Third Part------------------------------------------------>
+        <fieldset
+          class="third-section"
+          fxFlexLayout="row"
+          fxFlexAlign="start"
+          *ngIf="step >= 2 || checkCondition == 'emptyFilter'"
+        >
+          <legend style="font-weight: bold">Filter Report</legend>
+
+          <mat-accordion>
+            <mat-expansion-panel
+              #panelRef
+              expanded="true"
+              (opened)="panelOpenState2 = true"
+              (closed)="panelOpenState2 = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Table Filter Rules </mat-panel-title>
+                <mat-panel-description
+                  *ngIf="error"
+                  class="third-section-mat-panel-desc"
+                >
+                  <p class="error-part">{{ errorMessage }}</p>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <ng-container
+                *ngFor="let rule of rules; let i = index"
+                class="query-builder-form-field"
+              >
+                <!-- <mat-stepper orientation="vertical" [linear]="isLinear" #stepper> -->
+                <!-- <mat-step> -->
+                <div
+                  class="rule"
+                  class="first-form-field"
+                  fxLayout="row wrap"
+                >
+                  <div fxFlex="17" style="font-size: 12px" fxFlex.xs="14">
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >Table Name<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select
+                        [(ngModel)]="rule.tableName"
+                        (selectionChange)="genrateFields(rule.tableName, i)"
+                      >
+                        <mat-option
+                          *ngFor="let table of selectedTables; let z = index"
+                          [value]="table"
+                          >{{ table }}</mat-option
+                        >
+                      </mat-select>
+                      <!-- <input matInput [disabled]="true" [value]="selectedTableName"> -->
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="rule.tableName !== ''"
+                  >
+                    <!--[(ngModel)]="rule.field" (ngModelChange)="onRuleChange(rule)"-->
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label
+                        >Select Field<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-select
+                        [(ngModel)]="rule.field"
+                        [disabled]="
+                          rule.tableName == undefined ||
+                          rule.tableName == null ||
+                          rule.tableName == ''
+                        "
+                        (selectionChange)="
+                          fieldSelection($event, rule.tableName, i)
+                        "
+                      >
+                        <mat-option
+                          *ngFor="let field of rule.fieldList; let z = index"
+                          [value]="field"
+                          (click)="
+                            genrateHint(rule.dataType, rule.operator, i)
+                          "
+                          >{{ field }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!-- <div fxFlex="17" style="font-size: 12px" fxFlex.xs="14" *ngIf="mode=='update'">
+               <mat-form-field class="query-builder-form-field" appearance="outline">
+                 <mat-label>Select Field<span class="mandatory-mark">*</span></mat-label>
+               <mat-select [(ngModel)]="rule.field" (selectionChange)="fieldSelection($event,rule.tableName,i)">
+                 <mat-option *ngFor="let field of fieldArray;let z = index" [value]="field" (click)="genrateHint(rule.dataType,rule.operator,i)">{{ field }}</mat-option>
+               </mat-select>
+               </mat-form-field>
+               </div> -->
+               <div
+               fxFlex="17"
+               style="font-size: 12px"
+               fxFlex.xs="14"
+               *ngIf="rule.field !== ''"
+             >
+               <!--(ngModelChange)="onRuleChange(rule)"-->
+               <mat-form-field
+                 class="query-builder-form-field"
+                 appearance="outline"
+               >
+                 <mat-label
+                   >Select Operator<span class="mandatory-mark"
+                     >*</span
+                   ></mat-label
+                 >
+                 <mat-select [(ngModel)]="rule.operator">
+                   <mat-option
+                     *ngFor="let operator of operators"
+                     [value]="operator.Operator"
+                     [disabled]="!operator.DataTypesList.includes(rule.dataType)"
+                     (click)="
+                       genrateHint(rule.dataType, rule.operator, i)
+                     "
+                     >{{ operator.Operator }}</mat-option
+                   >
+                 </mat-select>
+               </mat-form-field>
+             </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator == 'LIKE' || rule.operator == 'NOT LIKE'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label>Select Wild Card</mat-label>
+                      <mat-select [(ngModel)]="rule.wildcard">
+                        <mat-option
+                          *ngFor="let wildcard of wildcards"
+                          [value]="wildcard"
+                          >{{ wildcard }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      (rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                      rule.dataType !== 'date' &&
+                      rule.dataType !== 'datetime'  &&
+                      rule.operator !== 'BETWEEN')
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      [matTooltip]="getToolTip(i)"
+                    >
+                      <mat-label
+                        >Value<span
+                          class="mandatory-mark"
+                          *ngIf="
+                            rule.operator !== 'IS NULL' &&
+                            rule.operator !== 'IS NOT NULL'
+                          "
+                          >*</span
+                        ></mat-label
+                      >
+                      <input
+                        matInput
+                        [(ngModel)]="rule.value"
+                        [disabled]="
+                          rule.operator == 'IS NULL' ||
+                          rule.operator == 'IS NOT NULL'
+                        "
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                      rule.dataType !== 'date' &&  
+                      rule.dataType !== 'datetime' &&
+                      rule.operator == 'BETWEEN'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      [matTooltip]="getToolTip(i)"
+                    >
+                      <mat-label
+                        >Value From<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <input matInput [(ngModel)]="rule.value1" />
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                     rule.dataType !== 'date' &&  
+                     rule.dataType !== 'datetime' &&
+                      rule.operator == 'BETWEEN'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      [matTooltip]="getToolTip(i)"
+                    >
+                      <mat-label
+                        >Value To<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <input matInput [(ngModel)]="rule.value2" />
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                      (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                      rule.operator !== 'IN' &&
+                      rule.operator !== 'NOT IN'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      matTootlip="Select Date Operation"
+                    >
+                      <mat-label
+                        >Date Operation<span class="mandatory-mark">*</span></mat-label
+                      >
+                      <mat-select [(ngModel)]="rule.dateOperation">
+                        <mat-option
+                          *ngFor="let dateValue of dateOptions"
+                           [value] ="dateValue.name"
+                           [disabled] = "dateValue.operator && !dateValue.operator.includes(rule.operator)"
+                          >
+                        {{dateValue.name}}
+                        <!-- <mat-option *ngFor = "let n of dateValue.n" [value]="n">{{n}}</mat-option> -->
+                          </mat-option>
+                      </mat-select>
+                      <!-- <input
+                        matInput
+                        [(ngModel)]="rule.value"
+                        [matDatepicker]="picker"
+                      />
+                      <mat-datepicker-toggle
+                        matPrefix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker> -->
+                    </mat-form-field>
+                    
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                      rule.dateOperation == 'Select Date'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      matTootlip="Select Date"
+                    >
+                      <mat-label
+                        >Date<span class="mandatory-mark">*</span></mat-label
+                      >
+                      
+                      <input
+                        matInput
+                        [(ngModel)]="rule.value"
+                        [matDatepicker]="picker"
+                        [max]="todayDate"
+                      />
+                      <mat-datepicker-toggle
+                        matPrefix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    
+                  </div>
+                  <div
+                  fxFlex="17"
+                  style="font-size: 12px"
+                  fxFlex.xs="14"
+                  *ngIf="
+                    rule.operator !== '' &&
+                    rule.dataType !== '' &&
+                    (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                    rule.dateOperation !== 'Range' && 
+                    rule.dateOperation !=='Select Year' &&
+                    rule.operator !== 'IN' &&
+                    rule.operator !== 'NOT IN' &&
+                    (rule.dateOperation == 'Previous n Quarter' || rule.dateOperation ==  'Current n Quarter' || rule.dateOperation == 'Previous n Month')
+                  "
+                >
+                  <mat-form-field
+                    class="query-builder-form-field"
+                    appearance="outline"
+                    matTootlip="MM/DD/YYYY"
+                  >
+                    <mat-label
+                      >Value<span class="mandatory-mark">*</span></mat-label
+                    >
+                    <mat-select [(ngModel)]="rule.value">
+                      <mat-option
+                        *ngFor="let dateValue of dateValueOptions"
+                         [value] ="dateValue"
+                         
+                        >
+                      {{dateValue}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                </div>
+                <div
+                  fxFlex="17"
+                  style="font-size: 12px"
+                  fxFlex.xs="14"
+                  *ngIf="
+                    rule.operator !== '' &&
+                    rule.dataType !== '' &&
+                    (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                   rule.dateOperation =='Select Year'"
+                >
+                  <mat-form-field
+                    class="query-builder-form-field"
+                    appearance="outline"
+                    matTootlip="MM/DD/YYYY"
+                  >
+                    <mat-label
+                      >Value<span class="mandatory-mark">*</span></mat-label
+                    >
+                    <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="rule.value"
+                    list="company"
+                    name="company"
+                    (change)="applyFilterYear($event)"
+                    autoComplete="off"
+                  />
+                  <mat-icon matSuffix>search</mat-icon>
+                  <datalist class="without-icon" id="company">
+                    <option
+                      *ngFor="let year of years"
+                      [value]="year"
+                    >
+                      {{ year }}
+                    </option>
+                  </datalist>
+                  </mat-form-field>
+                  
+                </div>
+
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                      (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                      (rule.operator == 'IN' || rule.operator == 'NOT IN')
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      matTootlip="MM/DD/YYYY"
+                    >
+                      <mat-label
+                        >Dates<span class="mandatory-mark">*</span></mat-label
+                      >
+                      <input matInput [max]="todayDate" [(ngModel)]="rule.value" />
+                      <mat-icon matPrefix [matMenuTriggerFor]="appMenu"
+                        >calendar_today</mat-icon
+                      >
+
+                      <mat-menu #appMenu="matMenu" class="drop-calendar">
+                        <div (click)="$event.stopPropagation()">
+                          <mat-calendar
+                            class="multi-date"
+                            #calendar
+                            (selectedChange)="
+                              select(
+                                $event,
+                                calendar,
+                                i,
+                                rule.dataType,
+                                rule.operator
+                              )
+                            "
+                            [dateClass]="isSelected"
+                          ></mat-calendar>
+                        </div>
+                      </mat-menu>
+                    </mat-form-field>
+                  </div>
+
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      rule.operator !== '' &&
+                      rule.dataType !== '' &&
+                      (rule.dataType == 'date' ||  rule.dataType == 'datetime') &&
+                      rule.operator == 'BETWEEN' && 
+                      rule.dateOperation == 'Range'
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      matTooltip="MM/DD/YYYY – MM/DD/YYYY"
+                    >
+                      <mat-label
+                        >Enter a date range<span class="mandatory-mark"
+                          >*</span
+                        ></mat-label
+                      >
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input
+                          matStartDate
+                          [max]="todayDate"
+                          placeholder="Start date"
+                          [(ngModel)]="rule.value1"
+                        />
+                        <input
+                          matEndDate
+                          [max]="todayDate"
+                          placeholder="End date"
+                          [(ngModel)]="rule.value2"
+                        />
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle
+                        matPrefix
+                        [for]="picker"
+                        (selectionChange)="selectDateRange($event)"
+                      ></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    [hidden]="true"
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                    >
+                      <mat-label>Select Data Type</mat-label>
+                      <mat-select
+                        [(ngModel)]="rule.dataType"
+                        [disabled]="true"
+                      >
+                        <mat-option
+                          *ngFor="let datatype of done"
+                          [value]="datatype.dataType"
+                          >{{ datatype.dataType }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    fxFlex="17"
+                    style="font-size: 12px"
+                    fxFlex.xs="14"
+                    *ngIf="
+                      (rule.tableName !== '' &&
+                        rule.field !== '' &&
+                        rule.dataType !=='date' && 
+                        rule.dataType !== 'datetime'&&
+                        rule.operator !== '' &&
+                        rule.operator !== 'BETWEEN' &&
+                        rule.operator !== 'IS NULL' &&
+                        rule.operator !== 'IS NOT NULL' &&
+                        rule.value !== '') || 
+                        (rule.tableName !== '' &&
+                        rule.field !== '' &&
+                        rule.dataType !=='date' && 
+                        rule.dataType !== 'datetime'&&
+                        rule.operator == 'BETWEEN' &&
+                        rule.value1 !== '' && rule.value2 !== '') ||
+                      ((rule.operator == 'IS NULL' ||
+                       rule.operator == 'IS NOT NULL') 
+                      && rule.value == '') ||
+                      ((rule.dataType == 'date' ||  rule.dataType == 'datetime') && rule.dateOperation == 'Range' && rule.operator == 'BETWEEN' &&
+                        rule.value1 !== '' && rule.value2 !== '') ||
+                         ((rule.dataType == 'date' ||  rule.dataType == 'datetime') && rule.dateOperation !== '' && rule.dateOperation !== 'Select Year' && rule.dateOperation !== 'Select Date') ||
+                        ((rule.dataType == 'date' ||  rule.dataType == 'datetime') && (rule.dateOperation == 'Select Year' || rule.dateOperation == 'Select Date') && rule.value.length > 0)
+                    "
+                  >
+                    <mat-form-field
+                      class="query-builder-form-field"
+                      appearance="outline"
+                      matTooltip="{{ hint }}"
+                    >
+                      <mat-label>Select Condition</mat-label>
+                      <mat-select [(ngModel)]="rule.condition">
+                        <mat-option
+                          *ngFor="let condition of condition"
+                          [value]="condition"
+                          (click)="addRule(i)"
+                          >{{ condition }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="start">
+                    <!-- <input type="text" [(ngModel)]="rule.value" (ngModelChange)="onRuleChange(rule)"> -->
+                    <!-- <button mat-raised-button extended color="accent" (click)="addRule()">Add Rule</button>
+           &nbsp;&nbsp;&nbsp;&nbsp; -->
+                    <button
+                      fxFlex="40"
+                      mat-icon-button
+                      extended
+                      color="accent"
+                      (click)="removeRule(rule)"
+                    >
+                      <mat-icon
+                        class="mat-icon-rtl-mirror delete-icon-position"
+                      >
+                        delete_forever
+                      </mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <!-- </mat-step>
+             </mat-stepper> -->
+              </ng-container>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <!-- ------------------------ -->
+        </fieldset>
+      </div>
+
+      <!----Third Part Fineshed-->
+     
+    </mat-tab>
+     <!---Tabs Part-->
+    <mat-tab label="Result" [disabled]="list.length <= 0" (click)="selectTab(1)">
+      <div>
+       <app-table-data [displayedColumnsInput]="displayedColumnsInput"
+        [displayedColumns]="displayedColumns"
+        [selectedIndex]="selectedIndex"
+         [list]="list" (tabEvent)="switchTab($event)"></app-table-data>
+        <!--  -->
+      </div>
+    </mat-tab>
+    <mat-tab label="Graph" [disabled]="list.length <= 0" (click)="selectTab(2)">
+      <div class="chartdata">
+        <!-- <app-chart-data
+          [displayedColumnsInput]="displayedColumnsInput"
+        ></app-chart-data> -->
+        <app-dynamic-chart
+          [displayedColumnsInput]="displayedColumnsInput" [graphData]="graphData" 
+          [selectedIndex]="selectedIndex"
+          (tabEvent)="switchTab($event)"
+        ></app-dynamic-chart>
+      </div>
+    </mat-tab>
+  </mat-tab-group>

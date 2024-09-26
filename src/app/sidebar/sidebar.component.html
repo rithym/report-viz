@@ -1,0 +1,232 @@
+<!-- <mat-accordion *ngIf="userType == 'Company User'">
+  <div *ngFor="let item1 of MenuItems?.navItems">
+    <mat-expansion-panel *ngIf="item1.childrenroute; else singleList1">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1?.displayName }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-accordion [togglePosition]="'before'">
+        <div *ngFor="let item of item1?.children">
+          <mat-expansion-panel *ngIf="item.childrenroute; else singleList2">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="level2">
+                {{ item.displayName }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list *ngFor="let item2 of item.children" role="list">
+              <mat-list-item role="listitem" class="level3">{{
+                item2.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+          <ng-template #singleList2>
+            <mat-list
+              role="list"
+              class="mat-list-level2"
+              (click)="navigateToModule(item)"
+            >
+              <mat-list-item role="listitem" class="level2">{{
+                item.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </ng-template>
+        </div>
+      </mat-accordion>
+    </mat-expansion-panel>
+
+    <ng-template #singleList1>
+      <mat-list role="list">
+        <mat-list-item role="listitem" class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1.displayName }}
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
+  </div>
+</mat-accordion>
+
+<mat-accordion *ngIf="userType == 'TMI Admin'">
+  <div *ngFor="let item1 of tmiAdminMenuItems?.navItems">
+    <mat-expansion-panel *ngIf="item1.childrenroute; else singleList1">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1?.displayName }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-accordion [togglePosition]="'before'">
+        <div *ngFor="let item of item1?.children">
+          <mat-expansion-panel *ngIf="item.childrenroute; else singleList2">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="level2">
+                {{ item.displayName }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list *ngFor="let item2 of item.children" role="list">
+              <mat-list-item role="listitem" class="level3">{{
+                item2.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+          <ng-template #singleList2>
+            <mat-list
+              role="list"
+              class="mat-list-level2"
+              (click)="navigateToModule(item)"
+            >
+              <mat-list-item role="listitem" class="level2">{{
+                item.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </ng-template>
+        </div>
+      </mat-accordion>
+    </mat-expansion-panel>
+
+    <ng-template #singleList1>
+      <mat-list role="list">
+        <mat-list-item role="listitem" class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1.displayName }}
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
+  </div>
+</mat-accordion>
+
+<mat-accordion *ngIf="userType == 'Super Admin'">
+  <div *ngFor="let item1 of superAdminMenuItems?.navItems">
+    <mat-expansion-panel *ngIf="item1.childrenroute; else singleList1">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1?.displayName }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-accordion [togglePosition]="'before'">
+        <div *ngFor="let item of item1?.children">
+          <mat-expansion-panel *ngIf="item.childrenroute; else singleList2">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="level2">
+                {{ item.displayName }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list *ngFor="let item2 of item.children" role="list">
+              <mat-list-item role="listitem" class="level3">{{
+                item2.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+          <ng-template #singleList2>
+            <mat-list
+              role="list"
+              class="mat-list-level2"
+              (click)="navigateToModule(item)"
+            >
+              <mat-list-item role="listitem" class="level2">{{
+                item.displayName
+              }}</mat-list-item>
+            </mat-list>
+          </ng-template>
+        </div>
+      </mat-accordion>
+    </mat-expansion-panel>
+
+    <ng-template #singleList1>
+      <mat-list role="list">
+        <mat-list-item role="listitem" class="level1">
+          <img class="level1-icons" src="assets/{{ item1.iconName }}" />
+          {{ item1.displayName }}
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
+  </div>
+</mat-accordion> -->
+
+<mat-accordion>
+    <div *ngFor="let item of menuList">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title class="level1">
+            <mat-icon>{{ item.moduleIcon }}</mat-icon>
+            &nbsp;
+            {{ item.moduleName }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-accordion [togglePosition]="'before'">
+          <div *ngFor="let item2 of item.Screens">
+            <mat-expansion-panel
+              *ngIf="item2.SubMenu.length != 0; else singleList2"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title class="level2">
+                  {{ item2.screenName }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list *ngFor="let item3 of item.SubMenu" role="list">
+                <mat-list-item role="listitem" class="level3">{{
+                  item3.screenName
+                }}</mat-list-item>
+              </mat-list>
+            </mat-expansion-panel>
+            <ng-template #singleList2>
+              <mat-list
+                role="list"
+                class="mat-list-level2"
+                (click)="navigateToModule(item2.screenURL, item2.screenName, item.moduleName)"
+              >
+                <mat-list-item role="listitem" class="level2">{{
+                  item2.screenName
+                }}</mat-list-item>
+              </mat-list>
+            </ng-template>
+          </div>
+        </mat-accordion>
+      </mat-expansion-panel>
+  </div>
+      <!---EXPANSION PANEL FOR MASTER MODULE-->
+      <!-- <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title class="level1">
+            {{ masterMenu[0].ModuleName }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-accordion [togglePosition]="'before'">
+          <div *ngFor="let master of masterMenu[0].SubModule ">
+            <mat-expansion-panel
+              *ngIf="master.Screens.length != 0;else singleMasterList2"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title class="level2">
+                  {{ master.SubModuleName }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list *ngFor="let item3 of master.Screens" role="list">
+                <mat-list-item  role="listitem" class="level3" [routerLink]="[item3.routelink]">{{
+                  item3.ScreenName
+                }}</mat-list-item>
+              </mat-list>
+            </mat-expansion-panel>
+            <ng-template #singleMasterList2>
+              <mat-list
+                role="list"
+                class="mat-list-level2"
+                [routerLink]="[master.routelink]"
+              >
+                <mat-list-item role="listitem" class="level2">{{
+                  master.SubModuleName
+                }}</mat-list-item>
+              </mat-list>
+            </ng-template>
+          </div>
+        </mat-accordion>
+      </mat-expansion-panel> -->
+      <!-------------------------------------->
+  </mat-accordion>

@@ -1,0 +1,157 @@
+<div class="top-container">
+  <mat-card class="column-attribute-form-card" fxLayout="column" fxLayoutGap="25px">
+  <mat-card-title><h2 fxFlex="25">Hierarchy</h2> 
+    <div fxFlex="75" fxLayoutAlign = "end center" class="search-field" style="font-size: 12px">
+      <mat-form-field class="query-builder-form-field"
+      appearance="outline">
+        <mat-label class="label-design">Search By Name or Id</mat-label>
+        <input
+          matInput
+          type="text"
+          name="search"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  </mat-card-title>
+  
+      
+  <br/>
+  <!---First Box Section-->
+    <div fxFlex="50%" >
+      <!-- <mat-card-title class="additional-section-title">{{"Additional column" }}</mat-card-title> -->
+        <form [formGroup]="setHierarchyForm" (ngSubmit)="saveHierarchy()">
+        <div fxLayout="row" fxLayoutGap="5px" class="card-container">
+            <!--Name Field -->
+
+            <div fxFlex="25" class="remove-bottom-margin hirerchyType">
+              <mat-form-field class="hirarch-form-field"  appearance="outline">
+                <mat-label>Select Levels</mat-label>
+                <mat-select formControlName="selectedDisplayValue">
+
+                  <mat-option *ngFor="let item of  hierarchyTable" value="{{item.value}}">{{item.text}}</mat-option>
+                </mat-select>
+                
+                <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+                <mat-error *ngIf="hasError('selectedDisplayValue','required')">You must make a selection</mat-error>
+              </mat-form-field>
+              </div>
+      <div fxFlex="50%" class="remove-bottom-margin hirerchyType"  *ngIf="this.setHierarchyForm.controls['selectedDisplayValue'].value == 0">
+        <mat-form-field class="hirarch-form-field"  appearance="outline">
+          <mat-label>Add Level</mat-label>
+          <input type="text" matInput formControlName="selectedDisplayValue"  >
+          <mat-error *ngIf="this.setHierarchyForm.controls['selectedDisplayValue'].value == 0">
+            Please enter Level Number
+          </mat-error>
+        </mat-form-field>
+      </div>
+  <!-- <div fxFlex="calc(50%-60px)" class="remove-bottom-margin hirerchyType">
+  <mat-form-field class="hirarch-form-field"  appearance="outline">
+    <mat-label>Select Key Field</mat-label>
+    <mat-select formControlName="selectedKeyField"  [disabled]="setHierarchyForm.controls['selectedDisplayValue'].value== ''">
+
+      <mat-option *ngFor="let item of tableKeyField" value="{{item}}">{{item}}</mat-option>
+    </mat-select>
+    --<mat-hint>Errors appear instantly!</mat-hint>---
+    <mat-error *ngIf="hasError('selectedKeyField','required')">You must make a selection</mat-error>
+  </mat-form-field>
+  </div>-->
+  <div fxFlex="25" class="remove-bottom-margin hirerchyType">
+    <mat-form-field class="hirarch-form-field"  appearance="outline">
+      <mat-label>Select Display Name</mat-label>
+        <mat-select formControlName="selectedDisplayName" multiple>
+          <mat-option (onSelectionChange)="onSelectionChange($event)" *ngFor="let item of hierarchyColumns"
+            [value]="item">{{ item }}
+          </mat-option>
+        </mat-select>
+      <mat-hint>Errors appear instantly!</mat-hint>
+      <mat-error *ngIf="hasError('selectedDisplayName','required')">You must make a selection</mat-error>
+    </mat-form-field>
+    </div> 
+    <div fxFlex="25" class="remove-bottom-margin hirerchyType">
+      <mat-form-field class="hirarch-form-field"  appearance="outline">
+        <mat-label>Select View Type</mat-label>
+        <mat-select formControlName="selectedViewType">
+  
+          <mat-option value="{{'Left to Right'}}">{{'Left to Right'}}</mat-option>
+          <mat-option value="{{'Top to Bottom'}}">{{'Top to Bottom'}}</mat-option>
+          <mat-option value="{{'Tree View'}}">{{'Tree View'}}</mat-option>
+        </mat-select>
+        <mat-hint>Errors appear instantly!</mat-hint>
+        <mat-error *ngIf="hasError('selectedViewType','required')">You must make a selection</mat-error>
+      </mat-form-field>
+      </div> 
+    <!--<div fxFlex="calc(50%-60px)" class="remove-bottom-margin hirerchyType">
+      <mat-form-field class="hirarch-form-field"  appearance="outline">
+        <mat-label>Select Parent ID</mat-label>
+        <mat-select formControlName="selectedParentId"  [disabled]="setHierarchyForm.controls['selectedDisplayValue'].value== ''">
+
+          <mat-option *ngFor="let item of hierarchyParent" value="{{item}}">{{item}}</mat-option>
+        </mat-select>
+        --<mat-hint>Errors appear instantly!</mat-hint>---
+        <mat-error *ngIf="hasError('selectedParentId','required')">You must make a selection</mat-error>
+      </mat-form-field>
+      </div>
+
+         <div fxFlex="calc(50%-60px)" class="remove-bottom-margin hirerchyType">
+          <mat-form-field class="hirarch-form-field"  appearance="outline">
+            <mat-label>Hierarchy For</mat-label>
+            <input type="text" matInput formControlName="selectedHierarchyFor"  >
+           ---- <mat-hint>Errors appear instantly!</mat-hint>---
+            <mat-error *ngIf="hasError('selectedHierarchyFor','required')">
+              Please enter a valid Hierarchy ID
+            </mat-error>
+          </mat-form-field>
+          </div> 
+  <div fxFlex="calc(50%-40px)" class="remove-bottom-margin hirerchyType">
+  <mat-label id="example-radio-group-label">Hierarchy Type: </mat-label>
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    formControlName="selectedHierarchyType">
+    <br>
+    <mat-radio-button class="example-radio-button"  value="Indivudal">
+      Individual
+    </mat-radio-button>
+    <br>
+    <mat-radio-button class="example-radio-button"  value="Entire">
+      Entire
+    </mat-radio-button>
+  </mat-radio-group>
+ <mat-error *ngIf="hasError('selectedHierarchyType','required')">You must make a selection</mat-error>
+  </div> -->
+  <div fxFlex="25"  fxLayoutAlign = "start center">
+    <button class="btn-space" color="primary" mat-raised-button type="submit">Execute</button>
+  </div>
+
+  </div>
+</form>
+ 
+  </div>
+
+  <div fxFlex="50%" [fxHide]="!isTreeView" class="hirarchy-size">
+    <!-- <mat-card class="column-attribute-form-card" > -->
+      <!-- <mat-card-title><h2>Tree View</h2></mat-card-title> -->
+    <ngx-org-chart  *ngIf="this.setHierarchyForm.controls['selectedViewType'].value == 'Top to Bottom'" [nodes]="this.nodes" direction="vertical"></ngx-org-chart>
+    <ngx-org-chart *ngIf="this.setHierarchyForm.controls['selectedViewType'].value == 'Left to Right'" [nodes]="this.nodes" direction="horizontal"></ngx-org-chart>
+    <mat-tree [dataSource]="dataSource" *ngIf="this.setHierarchyForm.controls['selectedViewType'].value == 'Tree View'" [treeControl]="treeControl">
+      <!-- This is the tree node template for leaf nodes-->
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <!-- use a disabled button to provide padding for tree leaf-->
+        {{node.name}}
+      </mat-tree-node>
+      <!-- This is the tree node template for expandable nodes-->
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+        {{node.name}}
+        <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror icon-position">
+            {{treeControl.isExpanded(node) ? 'minimize' : 'add'}}
+          </mat-icon>
+        </button>
+      </mat-tree-node>
+    </mat-tree>
+  </div>
+</mat-card>
+  </div>
+  <!-------------------------------------->

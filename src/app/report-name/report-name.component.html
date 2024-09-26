@@ -1,0 +1,11 @@
+<div class="report-div">
+  <mat-form-field class="query-builder-report-field" appearance="outline" >
+    <mat-label>Report Name</mat-label>
+    <input matInput [(ngModel)]="reportName">
+  </mat-form-field>
+</div>
+<div>
+<button mat-raised-button color="accent" (click)="closeDialog()" [disabled]="reportName == '' || reportName == undefined || reportName == null">Ok</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button mat-raised-button color="primary" (click)="dialogRef.close()">Cancel</button>
+</div>

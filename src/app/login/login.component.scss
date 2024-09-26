@@ -1,0 +1,110 @@
+.top-level-container {
+    // background-image: url("../../assets/login-background.svg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: auto;
+  
+    :host {
+      // display: flex;
+      flex: 1;
+      background: #fdfdfd 0% 0% no-repeat padding-box;
+    }
+  
+    .inline-loader {
+      display: inline-block;
+    }
+  
+    .login-toolbar {
+      position: fixed;
+      top: 0;
+      //height: 10px;
+    }
+  
+    .version {
+      margin: 0;
+    }
+  
+    .login-container,
+    .mat-form-field {
+      width: 100%;
+    }
+  
+    .login-fields > :not(:last-child) {
+      margin-bottom: 1px;
+    }
+  
+    .login-error {
+      color: red;
+      font-size: 10px;
+    }
+  
+    .login-box {
+      background: #ffffff 0% 0% no-repeat padding-box;
+      box-shadow: 20px 20px 20px #0000001a;
+      border-radius: 8px;
+      padding: 20px;
+    }
+  
+    ::ng-deep
+      .login-form-field.mat-form-field-appearance-outline
+      .mat-form-field-infix {
+      padding: 0.4em 0 !important;
+    }
+  
+    h1 {
+      color: #3f77bc;
+    }
+  
+    .signIn-btn {
+     margin-top: 0px;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+  
+    .login-text {
+      font-weight: 600;
+      letter-spacing: 0px;
+      color: #000000;
+    }
+  
+    .footer {
+      position: absolute;    
+      bottom: 20px;
+      font-size: 16px;
+      line-height: 18px;
+      color: #2e2e2e;
+    }
+    .footerTwo {
+      position: absolute;    
+      top: 10px;
+      font-size: 16px;
+      line-height: 18px;
+      color: #2e2e2e;
+    }
+  
+    .forgot-password {
+      margin-top: -10px !important;
+      margin-bottom: 10px !important;
+      color: #673091 !important;
+      font-weight: 400 !important;
+      float: right !important;
+      font-size: 12px;
+    }
+  
+    ::ng-deep input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: black;
+    }
+    .ok-btn {
+      padding: 5px 0px;
+      text-transform: uppercase;
+      width: 150px;
+      margin-left: 80px;
+      margin-bottom: 20px;
+    }
+  }
+  

@@ -1,0 +1,132 @@
+<div
+  fxFill
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  class="top-level-container"
+>
+  <div class="login-container" fxLayout="row" fxLayoutAlign="center">
+    <mat-card
+      fxFlex="90%"
+      fxFlex.sm="75%"
+      fxFlex.md="50%"
+      fxFlex.gt-md="25%"
+      class="login-box"
+    >
+      <div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
+          <img src="assets/logo.png" width="100px" height="70px" />
+        </div>
+        <br />
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
+          <span *ngIf="step == 1" class="login-text">{{ "Login to proceed"  }}</span>
+          <span *ngIf="step == 2" class="login-text">{{ "Reset Password?" }}</span>
+        </div>
+        <br />
+      </div>
+      <form *ngIf="step == 1" [formGroup]="loginForm" novalidate>
+        <div class="login-error" [hidden]="!error || isLoading">
+          {{ "email or password incorrect!"  }}
+        </div>
+        <br />
+        <div class="login-fields" fxLayout="column">
+          <mat-label
+            >{{ "Username"  }}<span class="mandatory-mark">*</span>
+          </mat-label>
+
+          <mat-form-field
+            [hideRequiredMarker]="true"
+            appearance="outline"
+            class="login-form-field"
+          >
+            <input
+              type="text"
+              matInput
+              formControlName="username"
+              autocomplete="username"
+              [placeholder]="'User Name' "
+              (keydown.enter)="keydown($event)"
+              required
+            />
+            <!---VALIDATORES FOR Email -->
+            <mat-error *ngIf="hasError('username', 'required')">
+              {{ "Username is Required!"  }}
+            </mat-error>
+
+            <mat-error *ngIf="hasError('username', 'email')">
+              {{ "Email must be a valid email address"  }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-label
+            >{{ "Password" 
+            }}<span class="mandatory-mark">*</span></mat-label
+          >
+          <mat-form-field
+            [hideRequiredMarker]="true"
+            appearance="outline"
+            class="login-form-field"
+          >
+            <input
+              [type]="hide ? 'password' : 'text'"
+              matInput
+              formControlName="password"
+              autocomplete="current-password"
+              [placeholder]="'Password' "
+              (keydown.enter)="keydown($event)"
+              required
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+              type="button"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <!---VALIDATORES FOR Email -->
+            <mat-error *ngIf="hasError('password', 'required')">
+              {{ "Password is Required!"  }}
+            </mat-error>
+
+            <mat-error *ngIf="hasError('password', 'minlength')">
+              {{ "Password should contain atleast  character"  }}
+            </mat-error>
+            <mat-error *ngIf="hasError('password', 'maxlength')">
+              {{ "Password should contain atmost 200 character"  }}
+            </mat-error>
+          </mat-form-field>
+
+           
+          <div>
+          <button mat-button class="forgot-password" (click)="resetPassword()" (keydown.enter)="$event.preventDefault()">{{
+                "Reset/Forgot Password?" 
+              }}</button>
+          </div>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="signIn-btn"
+            type="submit"
+            (click)="login()"
+            [disabled]="!loginForm.valid"
+          >
+            <span>{{ "Sign In"  }}</span>
+          </button>
+        </div>
+      </form>
+      <div *ngIf="step == 2">
+        <p>Password Reset Link will be Sent to your Mail Please Check your Inbox and reset your password</p>
+        <button mat-raised-button color="primary" class="ok-btn" type="submit" (click)="linkSent()">
+          <span>{{ "OK"}}</span>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+   <div fxLayout="row" fxLayoutAlign="center" class="footer">
+    <span>{{ "© 2018 - 2022. All rights reserved."  }}</span>
+   </div>
+</div>
+
